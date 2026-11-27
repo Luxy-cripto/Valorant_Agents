@@ -3,6 +3,7 @@ import '../models/agent_model.dart';
 import '../services/valorant_service.dart';
 import '../widgets/glass_card.dart';
 import '../widgets/error_state_widget.dart';
+import '../widgets/interactive_3d_agent_viewer.dart';
 
 class AgentListScreen extends StatefulWidget {
   const AgentListScreen({Key? key}) : super(key: key);
@@ -265,7 +266,7 @@ class _AgentListScreenState extends State<AgentListScreen> {
     );
   }
 
-  // BOTTOM SHEET DETAIL AGENT
+  // BOTTOM SHEET DETAIL AGENT WITH INTERACTIVE 3D VIEWER
   void _showAgentDetailBottomSheet(AgentModel agent) {
     showModalBottomSheet(
       context: context,
@@ -306,20 +307,15 @@ class _AgentListScreenState extends State<AgentListScreen> {
                   ),
                   const SizedBox(height: 16),
 
-                  // Hero Portrait Image
+                  // Hero Portrait Image 3D Interactive (Animasi Bernapas + Drag 3D Tilt)
                   Center(
-                    child: SizedBox(
-                      height: 200,
-                      child: agent.fullPortrait != null && agent.fullPortrait!.isNotEmpty
-                          ? Image.network(
-                              agent.fullPortrait!,
-                              fit: BoxFit.contain,
-                              errorBuilder: (_, __, ___) => Image.network(agent.displayIcon ?? '', height: 120),
-                            )
-                          : (agent.displayIcon != null ? Image.network(agent.displayIcon!, height: 120) : const Icon(Icons.person, size: 80, color: Colors.white)),
+                    child: Interactive3DAgentViewer(
+                      portraitUrl: agent.fullPortrait,
+                      fallbackIconUrl: agent.displayIcon,
+                      agentName: agent.displayName,
                     ),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 16),
 
                   // Agent Name & Role
                   Center(
